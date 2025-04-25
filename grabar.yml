@@ -1,0 +1,26 @@
+name: Grabar programa de radio
+
+on:
+  schedule:
+    - cron: '0 19 * * 1'  # Todos los lunes a las 19:00 UTC
+  workflow_dispatch:
+
+jobs:
+  grabar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: Instalar FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Ejecutar script de grabación
+        run: python3 script.py
+
+      - name: Guardar grabación como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: grabacion-radio
+          path: "*.mp3"
